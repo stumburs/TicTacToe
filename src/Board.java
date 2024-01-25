@@ -20,15 +20,10 @@ public class Board {
                 System.out.print("| ");
 
                 switch (values[x + y * board_size]) {
-                    case CIRCLE -> {
-                        System.out.print("O ");
-                    }
-                    case CROSS -> {
-                        System.out.print("X ");
-                    }
-                    case NONE -> {
-                        System.out.print((x + y * board_size + 1) + " ");
-                    }
+                    case CIRCLE -> System.out.print("O ");
+                    case CROSS -> System.out.print("X ");
+                    case NONE -> System.out.print((x + y * board_size + 1) + " ");
+                    default -> throw new IllegalStateException("Unexpected value: " + values[x + y * board_size]);
                 }
             }
             System.out.println('|');

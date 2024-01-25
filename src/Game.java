@@ -1,12 +1,11 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Game {
-    private boolean running = false;
-    Board board = new Board();
+    private final boolean running;
+    Board board;
     Scanner input = new Scanner(System.in);
 
-    public Game(int board_size) {
+    public Game() {
         running = true;
         board = new Board();
     }
