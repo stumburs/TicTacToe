@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Game {
-    private final boolean running;
+    private boolean running;
     Board board;
     Scanner input = new Scanner(System.in);
 
@@ -88,8 +88,10 @@ public class Game {
             board.values[pos] = Values.CROSS;
 
             if (checkWin().equals(Values.CROSS)) {
+                running = false;
                 System.out.println("CROSS WON");
             } else if (checkWin().equals(Values.CIRCLE)) {
+                running = false;
                 System.out.println("CIRCLE WON");
             }
         }
