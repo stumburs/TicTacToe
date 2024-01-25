@@ -19,7 +19,13 @@ public class Game {
     // Get a valid user input (1-9)
     public int getInput() {
         while (true) {
-            System.out.print("Input a position [1-9]: ");
+
+            while (!input.hasNextInt())
+            {
+                System.out.print("Input a position [1-9]: ");
+                input.nextLine();
+            }
+
             int user_input = input.nextInt();
             if (user_input >= 1 && user_input <= 9) {
                 if (board.values[user_input - 1].equals(Values.NONE)) {
@@ -113,9 +119,11 @@ public class Game {
             }
         }
 
+        // First render
+        clearScreen();
+        board.render();
+
         while (running) {
-            clearScreen();
-            board.render();
 
             int pos = getInput() - 1; // user gets asked 1-9 for simplicity
             board.values[pos] = player_value;
@@ -125,27 +133,25 @@ public class Game {
                 opponentMove();
             }
 
+            clearScreen();
+            board.render();
+
             Values winner = checkWin();
 
             // This is a mess
             if (winner.equals(Values.CROSS)) {
-                clearScreen();
-                board.render();
-                System.out.println("CROSS WON");
                 running = false;
+                System.out.println("X Won!");
             } else if (winner.equals(Values.CIRCLE)) {
-                clearScreen();
-                board.render();
-                System.out.println("CIRCLE WON");
                 running = false;
+                System.out.println("O Won!");
             } else if (winner.equals(Values.NONE)) {
                 if (board.filled()) {
-                    clearScreen();
-                    board.render();
-                    System.out.println("DRAW");
                     running = false;
+                    System.out.println("Draw!");
                 }
             }
+
         }
     }
 }
