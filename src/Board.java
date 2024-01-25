@@ -1,16 +1,17 @@
-public class Board {
-    public int board_size;
-    public Values[] board;
+import java.util.Arrays;
 
-    public Board(int board_size) {
-        this.board_size = board_size;
-        board = new Values[board_size * board_size];
+public class Board {
+    public int board_size = 3;
+    public Values[] values = new Values[board_size * board_size];
+
+    public Board() {
+        Arrays.fill(values, Values.NONE);
     }
 
+    // Probably not the best solution
     public void render() {
         for (int y = 0; y < board_size; y++) {
-            for (int ch = 0; ch <= board_size * 4; ch++)
-            {
+            for (int ch = 0; ch <= board_size * 4; ch++) {
                 System.out.print('-');
             }
             System.out.println();
@@ -18,7 +19,7 @@ public class Board {
 
                 System.out.print("| ");
 
-                switch (board[x + y * board_size]) {
+                switch (values[x + y * board_size]) {
                     case CIRCLE -> {
                         System.out.print("O ");
                     }
@@ -26,14 +27,13 @@ public class Board {
                         System.out.print("X ");
                     }
                     case NONE -> {
-                        System.out.print("  ");
+                        System.out.print((x + y * board_size + 1) + " ");
                     }
                 }
             }
             System.out.println('|');
         }
-        for (int ch = 0; ch <= board_size * 4; ch++)
-        {
+        for (int ch = 0; ch <= board_size * 4; ch++) {
             System.out.print('-');
         }
         System.out.println();
