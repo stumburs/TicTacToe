@@ -8,6 +8,16 @@ public class Board {
         Arrays.fill(values, Values.NONE);
     }
 
+    boolean filled()
+    {
+        for (Values value : values)
+        {
+            if (value == Values.NONE)
+                return false;
+        }
+        return true;
+    }
+
     // Probably not the best solution
     public void render() {
         for (int y = 0; y < board_size; y++) {

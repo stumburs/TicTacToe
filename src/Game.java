@@ -1,8 +1,13 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
     private boolean running;
     Board board;
+
+    Values player_value = Values.NONE;
+    Values opponent_value = Values.NONE;
+
     Scanner input = new Scanner(System.in);
 
     public Game() {
@@ -10,6 +15,7 @@ public class Game {
         board = new Board();
     }
 
+    // TODO: Fix inputting chars
     // Get a valid user input (1-9)
     public int getInput() {
         while (true) {
@@ -38,6 +44,17 @@ public class Game {
             case CIRCLE -> 1;
             case NONE -> 0;
         };
+    }
+
+    void opponentMove() {
+        Random random = new Random();
+        while (true) {
+            int pos = random.nextInt(0, 8);
+            if (board.values[pos].equals(Values.NONE)) {
+                board.values[pos] = opponent_value;
+                return;
+            }
+        }
     }
 
     // Check win using a magic square 'cause why not.
@@ -80,19 +97,54 @@ public class Game {
     }
 
     public void run() {
+
+        // Select player
+        while (player_value.equals(Values.NONE)) {
+            System.out.print("Select player [X, O]: ");
+            switch (input.next().toLowerCase().charAt(0)) {
+                case 'x' -> {
+                    opponent_value = Values.CIRCLE;
+                    player_value = Values.CROSS;
+                }
+                case 'o' -> {
+                    opponent_value = Values.CROSS;
+                    player_value = Values.CIRCLE;
+                }
+            }
+        }
+
         while (running) {
             clearScreen();
             board.render();
 
             int pos = getInput() - 1; // user gets asked 1-9 for simplicity
-            board.values[pos] = Values.CROSS;
+            board.values[pos] = player_value;
 
-            if (checkWin().equals(Values.CROSS)) {
-                running = false;
+            if (!board.filled())
+            {
+                opponentMove();
+            }
+
+            Values winner = checkWin();
+
+            // This is a mess
+            if (winner.equals(Values.CROSS)) {
+                clearScreen();
+                board.render();
                 System.out.println("CROSS WON");
-            } else if (checkWin().equals(Values.CIRCLE)) {
                 running = false;
+            } else if (winner.equals(Values.CIRCLE)) {
+                clearScreen();
+                board.render();
                 System.out.println("CIRCLE WON");
+                running = false;
+            } else if (winner.equals(Values.NONE)) {
+                if (board.filled()) {
+                    clearScreen();
+                    board.render();
+                    System.out.println("DRAW");
+                    running = false;
+                }
             }
         }
     }
